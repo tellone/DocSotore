@@ -16,6 +16,7 @@ describe "user/index.html.haml" do
         fill_in 'Email', :with => 'gotoexaple@obv.se'
         fill_in 'Password', :with =>'secuity!'
       end
+      click_button 'Sign in'
     end
 
 end
