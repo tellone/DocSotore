@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "static/index.html.haml" do
+describe "user/index.html.haml" do
   it "Has a header" do
     visit '/'
     page.should have_content("Wellcome to the Document Storage!")
