@@ -7,7 +7,7 @@ describe UsersController do
    end
  
    it "crates a new user" do
-     # pending("a mock model nice")
+     pending("a mock model nice")
      User.should_receive(:new).with.("string" => "CaptianObvious@obv.se").and_return(@user)
       post :create, user => { "email" => "CaptianObvious@obv.se"}
   end
