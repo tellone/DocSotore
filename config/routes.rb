@@ -4,7 +4,7 @@ DocumentStorage::Application.routes.draw do
 
 
   root :to => "user#index"
-  
+  resources:user  
   
   
   # Sample of regular route:

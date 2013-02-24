@@ -7,8 +7,15 @@ describe "user/index.html.haml" do
   end
     it "has a link to sign up page" do
       visit '/'
-      page.should have_link('sign up')
       page.should have_link('login')
       page.should have_link('recover lost password')
     end
+    it " has a login form" do
+      visit '/'
+      within('#login_form') do
+        fill_in 'Email', :with => 'gotoexaple@obv.se'
+        fill_in 'Password', :with =>'secuity!'
+      end
+    end
+
 end
