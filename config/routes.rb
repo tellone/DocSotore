@@ -3,8 +3,8 @@ DocumentStorage::Application.routes.draw do
   # first created -> highest priority.
 
 
-  root :to => "user#index"
-  resources:user  
+  root :to => "users#index"
+  resources :users  
   
   
   # Sample of regular route:
