@@ -9,11 +9,11 @@
         %h1 Wellcome to the Document Storage!
       #nav
         %ol
-          = link_to('sing up', user_path)
+          -# = link_to('sing up', user_path)
       
-          %a{:href => '/index', :title => 'login'} login
+          %a{:href => '/', :title => 'login'} login
 
-          %a{:href => '/index', :title => 'recover'} recover lost password
+          %a{:href => '/', :title => 'recover'} recover lost password
       #login_form
         %form
           = label :user ,:email, "Email"

@@ -22,5 +22,10 @@ describe UsersController do
      response.should redirect_to( :action => "index")
    end
  end
-
+  describe "User index" do
+    it "find all the users" do
+      pending('do I need this?')
+    end
+  end
+    
 end
