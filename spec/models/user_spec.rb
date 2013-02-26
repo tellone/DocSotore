@@ -19,5 +19,10 @@ describe User do
       @user.should_not be_valid 
 
     end
+    it "Stores the corrent values" do
+      @user.email.should eql("captianovious@obv.se")
+      
+      @user.password.should eql("secure!")
+    end
   end
 end

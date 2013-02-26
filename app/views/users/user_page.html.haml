@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %title user profile
+
+  %body 
+    #options
+      =link_to ("create user", user_create)
+      =link_to ("edit user", user_edit)
+      =link_to ("destroy user" user_destroy)
+
+    #information
+      %h3 Email - 
+        = @user.email
+      %br
+      % 

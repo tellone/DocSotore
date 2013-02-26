@@ -9,11 +9,12 @@
         %h1 Wellcome to the Document Storage!
       #nav
         %ol
-          -# = link_to('sing up', user_path)
+          = link_to('sign up', root_path)
       
-          %a{:href => '/', :title => 'login'} login
+          = link_to('log in', root_path)
 
-          %a{:href => '/', :title => 'recover'} recover lost password
+          = link_to('recover lost password', root_path)
+
       #login_form
         %form
           = label :user ,:email, "Email"
@@ -21,6 +22,12 @@
           = label :user, :password, "Password"
           = password_field :user, :password
           %input{:type => "submit", :value => "Sign in"}
+      #Users
+        %h2 List all users
+        - @users.each do |user|
+        %li
+          = link_to(user.email, root_path) 
+
       #content
         %yield
     

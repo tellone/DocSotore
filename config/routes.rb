@@ -4,8 +4,10 @@ DocumentStorage::Application.routes.draw do
 
 
   root :to => "users#index"
-  resources :users  
-  
+
+  resources :users do
+    resources :documents
+  end 
   
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'

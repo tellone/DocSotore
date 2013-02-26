@@ -7,7 +7,7 @@ describe "users/index.html.haml" do
   end
     it "has a link to sign up page" do
       visit '/'
-      page.should have_link('login')
+      page.should have_link('log in')
       page.should have_link('recover lost password')
     end
     it " has a login form" do
@@ -18,5 +18,12 @@ describe "users/index.html.haml" do
       end
       click_button 'Sign in'
     end
-
+    it " has a list of users currently logged in" do
+    
+      user1 = FactoryGirl.create(:user)
+      user2 = FactoryGirl.create(:user)
+      visit root_path
+      page.should have_link(user1.email)
+      page.should have_link(user2.email)
+    end
 end
