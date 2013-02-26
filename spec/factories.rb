@@ -15,10 +15,8 @@ FactoryGirl.define do
     password 'gogo'
   end
 
-  # factory :document do |f|
-  #   user
-  #   owner_id user.id
-  #   f.title "publish"
-  #   file
-  # end
+  factory :document do
+    user
+    title "publish"
+  end
 end
