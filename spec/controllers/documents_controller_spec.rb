@@ -6,7 +6,7 @@ describe DocumentsController do
   before :each do 
 
     @user1 = FactoryGirl.create(:user)
-    @doc1 = FactoryGirl.build(:document)
+    @doc1 = FactoryGirl.create(:document, :user => @user1)
   end
 
 
@@ -17,52 +17,44 @@ describe DocumentsController do
       }.to_not change(Document,:count)
     end
   end
-  describe "Post get new" do
-    pending "new"
-    it "creates a new document instace at the user" do
-      post :create, :user_id => @user1.id, document: FactoryGirl.attributes_for(:document, user_id: @user1.id) 
+  describe "Post create" do
+    it "creates a new document at the user" do
+      expect{
+        post :create, :user_id => @user1.id, document: FactoryGirl.attributes_for(:document, user: @user1) 
+      }.to change(Document, :count).by(1)
     end 
+
+    it "redirects to the new user" do
+      pending("show")
+      post :create, :user_id => @user1.id, document: FactoryGirl.attributes_for(:document, user: @user1) 
+      response.should redirect_to @user1.documents.last 
+    end
   end
-    #   context "with valid attributes" do
-    #     it "creates a new user" do
-    #       expect{
-    #         post :create, user: FactoryGirl.attributes_for(:user)
-    #       }.to change(User,:count).by(1)
-    #     end
+    describe "GET #index" do
+      it "populates an array of users" do
+        get :index, :user_id => @user1.id
+        assigns(:documents).should eq([@doc1])
+      end
 
-    #     it "redirects to the new user" do
-    #       post :create, user: FactoryGirl.attributes_for(:user)
-    #       response.should redirect_to User.last
-    #     end
-    #   end
-    # end
-    # describe "GET #index" do
-    #   it "populates an array of users" do
-    #     user = FactoryGirl.create(:user)
-    #     get :index
-    #     assigns(:users).should eq([user])
-    #   end
-
-    #   it "renders the :index view" do
-    #     get :index
-    #     response.should render_template :index
-    #   end
-    # end
+      it "renders the :index view" do
+        get :index, :user_id => @user1.id 
+        response.should render_template :index
+      end
+    end
   # end
 
 
-  # describe "GET #show" do
-  # it "assigns the requested user to @user" do
-  #   user = FactoryGirl.create(:user)
-  #   get :show, id: user
-  #   assigns(:user).should eq(user)
-  # end
+  describe "GET #show" do
+  it "assigns the requested user to @user" do
+    get :show, :user_id => @user1.id, id: @doc1
+    assigns(:document).should eq(@doc1)
+  end
   
-  # it "renders the #show view" do
-  #   get :show, id: FactoryGirl.create(:user)
-  #   response.should render_template :show
-  # end
-# end
+  it "renders the #show view" do
+    get :show, :user_id => @user1.id, id: @doc1
+    response.should render_template :show
+  end
+end
 
   # describe 'PUT update' do
   #   before :each do

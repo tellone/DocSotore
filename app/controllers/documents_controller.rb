@@ -1,10 +1,6 @@
 class DocumentsController < ApplicationController
   before_filter :get_user
-  
-  # private #get_user should not be called outside contoller
-  def get_user
-    @user = User.find(params[:user_id])
-  end
+  before_filter :get_document, :only => [:show] 
 
   def new
     @document = @user.documents.build
@@ -15,11 +11,14 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.new(params[:user])
-    @document.save
-    
-    flash[:notice] = "Project has been created."
-    redirect_to @document 
+    @document = @user.documents.build(params[:document])
+    if @document.save
+      flash[:notice] = "Document has been created."
+      redirect_to [@user, @document]
+    else
+      flash[:notice] = "Failed to create document."
+      render :action => "new"
+    end
   end
   
   def edit
@@ -27,7 +26,7 @@ class DocumentsController < ApplicationController
   end
   
   def show
-    @documents = Document.find(params[:id])
+
   end
   
   def update  
@@ -46,5 +45,14 @@ class DocumentsController < ApplicationController
     @document.destroy
     flash[:notice] = "document deleted."
     redirect_to documents_path 
+  end
+
+  private #get_user should not be called outside contoller
+  def get_user
+    @user = User.find(params[:user_id])
+  end
+  private
+  def get_document
+    @document=@user.documents.find(params[:id])
   end
 end
