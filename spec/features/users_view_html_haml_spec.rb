@@ -63,7 +63,13 @@ describe "the user view" do
     end
  
     it "Displays an edit form with email and password" do
-      pending
+      page.should have_content("Edit user profile")
+      within('#userform') do
+        fill_in 'Email', :with => 'gotoexaple@obv.se'
+        fill_in 'Password', :with => 'secure!'
+        fill_in 'Password confirm', :with => 'secure!'
+        click_button "Save"
+      end
     end
   end
 end
