@@ -18,4 +18,7 @@ FactoryGirl.define do
     user
     title "publish"
   end
+  factory :error_doc, parent: :document do
+    title "pub"
+  end
 end

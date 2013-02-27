@@ -56,67 +56,59 @@ describe DocumentsController do
   end
 end
 
-  # describe 'PUT update' do
-  #   before :each do
-  #     @user = FactoryGirl.create(:user, email: "just@temp.com", password: "goodone")
-  #   end
-  #   context "valid attributes" do
-  #     it "located the requested @user" do
-  #       put :update, id: @user, user: FactoryGirl.attributes_for(:user)
-  #       assigns(:user).should eq(@user)      
-  #     end
+  describe 'PUT update' do
+    before :each do
+      @doc2 = FactoryGirl.create(:document, user: @user1, title: "NoThisOne")
+    end
+    context "valid attributes" do
 
-  #     it "changes @user's attributes" do
-  #       put :update, id: @user, 
-  #         user: FactoryGirl.attributes_for(:user, email: "get@it.here", password: "Wonder")
-  #       @user.reload
-  #       @user.email.should eq("get@it.here")
-  #       @user.password.should eq("Wonder")
-  #     end
+      it "changes @user's attributes" do
+        put :update, :user_id=> @user1.id, id: @doc2, document:  FactoryGirl.attributes_for(:document, :user => @user1)
+        @doc2.reload
+        @doc2.title.should eq("publish")
+        # @doc2.attach.should eq("Wonder")
+      end
 
-  #     it "redirects to the updated user" do
-  #       put :update, id: @user, user: FactoryGirl.attributes_for(:user)
-  #       response.should redirect_to @user
-  #     end
-  #   end
+      it "redirects to the updated user" do
+        put :update, :user_id=> @user1.id, id: @doc2, document:  FactoryGirl.attributes_for(:document, :user => @user1)
+        response.should redirect_to [@user1, @doc2]
+      end
+    end
 
-  #   context "invalid attributes" do
-  #     it "locates the requested @user" do
-  #       put :update, id: @user, user: FactoryGirl.attributes_for(:user, email:"get@it.here", password: nil)
-  #       assigns(:user).should eq(@user)      
-  #     end
 
-  #     it "does not change @user's attributes" do
-  #       put :update, id: @user, 
-  #         user: FactoryGirl.attributes_for(:user, email:"get@it.here", password: nil)
-  #       @user.reload
-  #       @user.email.should_not eq("get@it.here")  
-  #       @user.password.should eq("goodone")
-  #     end
+    context "invalid attributes" do
+      it "locates the requested @user" do
+        put :update, :user_id=> @user1.id, id: @doc2, document:  FactoryGirl.attributes_for(:error_doc, :user => @user1)
+        assigns(:document).should eq(@doc2)      
+      end
 
-  #     it "re-renders the edit method" do
-  #       put :update, id: @user, user: FactoryGirl.attributes_for(:user, email: nil, password: 'wow')
-  #       response.should render_template :edit
-  #     end
-  #   end
-  # end
-  # describe "The destroy delete aciton"do
-  #   before :each do
-  #     @user = FactoryGirl.create(:user)
-  #   end
+      it "does not change @user's attributes" do
+        put :update, :user_id=> @user1.id, id: @doc2, document:  FactoryGirl.attributes_for(:error_doc, :user => @user1)
+        @doc2.reload
+        @doc2.title.should_not eq("publish")  
+      end
+
+      it "re-renders the edit method" do
+        pending("routes")
+        put :update, :user_id=> @user1.id, id: @doc2, document:  FactoryGirl.attributes_for(:error_doc, :user => @user1)
+        response.should render_template :edit
+      end
+    end
+  end
+  describe "The destroy delete aciton"do
     
-  #   it "deletes a user" do
-  #     expect{
-  #       delete :destroy, id: @user
-  #     }.to change(User,:count).by(-1)
-  #   end
+    it "deletes a document" do
+      expect{
+        delete :destroy, :user_id => @user1.id, id: @doc1
+      }.to change(Document,:count).by(-1)
+    end
 
-  #   it "redirects to index" do
+    it "redirects to index" do
 
-  #     delete :destroy, id: @user
+      delete :destroy, :user_id => @user1.id, id: @doc1
 
-  #     response.should render_template :index
-  #   end
-  # end
+      response.should render_template @user
+    end
+  end
 end
 
