@@ -1,5 +1,7 @@
 require 'spec_helper'
 describe "the user view" do
+
+
   describe "users/index.html.haml" do
     before :each do
       visit '/users'
@@ -11,6 +13,7 @@ describe "the user view" do
       page.should have_link('log in')
       page.should have_link('recover lost password')
     end
+
     it " has a login form" do
       within('#login_form') do
         fill_in 'Email', :with => 'gotoexaple@obv.se'
@@ -18,6 +21,7 @@ describe "the user view" do
       end
       click_button 'Sign in'
     end
+
     it " has a list of users currently logged in" do
 
       user1 = FactoryGirl.create(:user)
@@ -30,38 +34,45 @@ describe "the user view" do
 
 
   describe "users/show.html.haml" do
+
     before :each do
-      
+
       @user1 = FactoryGirl.create(:user)
       # @user2 = FactoryGirl.create(:user)
-      visit '/users'
     end
 
     it "displayes profile and links to edit" do
-
+      visit '/users'
       click_link(@user1.email)
       page.should have_content(@user1.email)
       page.should have_link("edit profile")
       page.should have_link("delete user")
     end  
-    
+
     it "Has options for own documents" do
-      
+
       doc1 = FactoryGirl.create(:document)
       visit user_path(@user1)
       page.should have_content("Documents")
       pending("set up the documet model")
       page.should have_link("doc1.title")
     end
+
+    it "has links to upload new document" do
+      visit user_path(@user1)
+      page.should have_link("upload document")
+    end
   end
+
+
   describe "users/edit.html.haml" do
-  before :each do
-      
+
+    before :each do
       @user1 = FactoryGirl.create(:user)
       # @user2 = FactoryGirl.create(:user)
       visit edit_user_path(@user1)
     end
- 
+
     it "Displays an edit form with email and password" do
       page.should have_content("Edit user profile")
       within('#userform') do
@@ -71,6 +82,6 @@ describe "the user view" do
         click_button "Save"
       end
     end
+
   end
 end
-    
