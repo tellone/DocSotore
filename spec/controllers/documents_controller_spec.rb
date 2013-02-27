@@ -1,19 +1,28 @@
 require 'spec_helper'
 
 describe DocumentsController do
-  pending("some passing user stuff")
+  # pending("some passing user stuff")
 
   before :each do 
-    @doc1 = FactoryGirl.build(:user)
-  end
-  describe "GET new" do
-    it "creates a new docment instace at the user" do
-      get :new
-    end
 
-  
+    @user1 = FactoryGirl.create(:user)
+    @doc1 = FactoryGirl.build(:document)
   end
-    # describe "POST create" do
+
+
+  describe "get new" do
+    it "creates a new instace withou saving" do
+      expect{
+        get :new, :user_id => @user1.id
+      }.to_not change(Document,:count)
+    end
+  end
+  describe "Post get new" do
+    pending "new"
+    it "creates a new document instace at the user" do
+      post :create, :user_id => @user1.id, document: FactoryGirl.attributes_for(:document, user_id: @user1.id) 
+    end 
+  end
     #   context "with valid attributes" do
     #     it "creates a new user" do
     #       expect{

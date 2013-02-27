@@ -1,4 +1,14 @@
 class DocumentsController < ApplicationController
+  before_filter :get_user
+  
+  # private #get_user should not be called outside contoller
+  def get_user
+    @user = User.find(params[:user_id])
+  end
+
+  def new
+    @document = @user.documents.build
+  end
 
   def index
    @documents = Document.all 
