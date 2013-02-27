@@ -7,6 +7,9 @@
       %h2 Profile
       %h5 Email -
       =@user.email
+      %p
+        = link_to "edit profile", edit_user_path(@user)
+        = link_to "delete user", :method => :delete, :confirm => "Do you realy want to remove this user?" 
 
     #Documents
       %h2 Documents
