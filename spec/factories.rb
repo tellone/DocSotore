@@ -10,9 +10,8 @@ FactoryGirl.define do
     password 'glhf'
   end
     
-  factory :error_user do
-    email nil
-    password 'gogo'
+  factory :error_user, parent: :user do
+    password nil
   end
 
   factory :document do

@@ -1,53 +1,73 @@
 require 'spec_helper'
 
 describe UsersController do
-
-  describe "User Create" do
-    before :each do 
-      @user = FactoryGirl.build(:user)
+  
+  
+  describe "Get :new" do
+    it "creates a new instace withou saving" do
+      expect{
+        get :new 
+      }.to_not change(User,:count)
     end
+  end
 
-    describe "POST create" do
-      context "with valid attributes" do
-        it "creates a new user" do
-          expect{
-            post :create, user: FactoryGirl.attributes_for(:user)
-          }.to change(User,:count).by(1)
-        end
-
-        it "redirects to the new user" do
+  
+  describe "POST create" do
+    context "with valid attributes" do
+      it "creates a new user" do
+        expect{
           post :create, user: FactoryGirl.attributes_for(:user)
-          response.should redirect_to User.last
-        end
-      end
-    end
-    describe "GET #index" do
-      it "populates an array of users" do
-        user = FactoryGirl.create(:user)
-        get :index
-        assigns(:users).should eq([user])
+        }.to change(User,:count).by(1)
       end
 
-      it "renders the :index view" do
-        get :index
-        response.should render_template :index
+      it "redirects to the new user" do
+        post :create, user: FactoryGirl.attributes_for(:user)
+        response.should redirect_to User.last
       end
+    end
+
+    context "with invaild attributes" do
+      it "does not save the new contact" do
+        expect{
+          post :create, user: FactoryGirl.attributes_for(:error_user)
+        }.to_not change(User,:count)
+      end
+
+      it "re-renders the new method" do
+        post :create, contact: FactoryGirl.attributes_for(:error_user)
+        response.should render_template :new
+      end
+    end 
+
+  end
+
+
+  describe "GET #index" do
+    it "populates an array of users" do
+      user = FactoryGirl.create(:user)
+      get :index
+      assigns(:users).should eq([user])
+    end
+
+    it "renders the :index view" do
+      get :index
+      response.should render_template :index
     end
   end
 
 
   describe "GET #show" do
-  it "assigns the requested user to @user" do
-    user = FactoryGirl.create(:user)
-    get :show, id: user
-    assigns(:user).should eq(user)
+    it "assigns the requested user to @user" do
+      user = FactoryGirl.create(:user)
+      get :show, id: user
+      assigns(:user).should eq(user)
+    end
+
+    it "renders the #show view" do
+      get :show, id: FactoryGirl.create(:user)
+      response.should render_template :show
+    end
   end
-  
-  it "renders the #show view" do
-    get :show, id: FactoryGirl.create(:user)
-    response.should render_template :show
-  end
-end
 
   describe 'PUT update' do
     before :each do
@@ -97,7 +117,7 @@ end
     before :each do
       @user = FactoryGirl.create(:user)
     end
-    
+
     it "deletes a user" do
       expect{
         delete :destroy, id: @user
