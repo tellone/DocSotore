@@ -1,5 +1,9 @@
 class Document < ActiveRecord::Base
   belongs_to :user
-  attr_accessible :title
-  validate :title, :presence => true, :length => {:minmium =>5}
+  has_one :doc_file
+  acts_as_taggable  
+  attr_accessible :title, :taglist
+  validates_presence_of :title
+  validates :doc_file, :attachment_presence => true
+
 end

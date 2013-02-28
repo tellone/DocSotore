@@ -14,6 +14,9 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
+  gem 'jquery-rails'
+  gem 'jquery-datatables-rails'
+  gem 'jquery-ui-rails'
 end
 
 gem "rspec-rails", ">= 2.0.1", :group => [:development, :test]
@@ -38,8 +41,9 @@ end
 
 # To use debugger
 # gem 'debugger'
+gem 'devise'
 gem 'cancan'
 gem 'acts-as-taggable-on'
 gem 'execjs'
-gem "jquery-rails"
+gem 'paperclip'
 gem "pry"
