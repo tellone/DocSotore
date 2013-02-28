@@ -22,14 +22,19 @@ end
 gem "rspec-rails", ">= 2.0.1", :group => [:development, :test]
 
 group :test do
+  gem "email_spec"
   gem "capybara" 
   gem "factory_girl_rails", ">= 1.6.0"
   gem "database_cleaner"
 end
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
+end
 
-# To use ActiveModel has_secure_password
+  # To use ActiveMode_ has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
-
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 

@@ -9,19 +9,9 @@
         %h1 Wellcome to the Document Storage!
       #nav
         %ol
-          = link_to('sign up', root_path)
+          = link_to('sign out', root_path)
       
-          = link_to('log in', root_path)
 
-          = link_to('recover lost password', root_path)
-
-      #login_form
-        %form
-          = label :user ,:email, "Email"
-          = text_field :user ,:email
-          = label :user, :password, "Password"
-          = password_field :user, :password
-          %input{:type => "submit", :value => "Sign in"}
       #Users
         %h2 List all users
         - @users.each do |user|

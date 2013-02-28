@@ -9,18 +9,18 @@ describe "the user view" do
     it "Has a header" do
       page.should have_content("Wellcome to the Document Storage!")
     end
-    it "has a link to sign up page" do
-      page.should have_link('log in')
-      page.should have_link('recover lost password')
-    end
+    # it "has a link to sign up page" do
+    #   page.should have_link('log in')
+    #   page.should have_link('recover lost password')
+    # end
 
-    it " has a login form" do
-      within('#login_form') do
-        fill_in 'Email', :with => 'gotoexaple@obv.se'
-        fill_in 'Password', :with =>'secuity!'
-      end
-      click_button 'Sign in'
-    end
+    # it " has a login form" do
+    #   within('#login_form') do
+    #     fill_in 'Email', :with => 'gotoexaple@obv.se'
+    #     fill_in 'Password', :with =>'secuity!'
+    #   end
+    #   click_button 'Sign in'
+    # end
 
     it " has a list of users currently logged in" do
 

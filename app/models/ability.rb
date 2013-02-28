@@ -10,11 +10,14 @@ class Ability
       else
         can :read, Document, :user_id => user.id
 
-        can :read, Document, :protected => false
+        can :read, Document
         can :update, Document, :user_id => user.id
         can :create, Document
        # can :update, User, 
         can :read, User
+        # if current_user == user
+        #   can :update, User
+        # end
       end
     #
     # The first argument to `can` is the action you are giving the user 

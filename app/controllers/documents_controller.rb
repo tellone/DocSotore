@@ -9,7 +9,7 @@ class DocumentsController < ApplicationController
 
   def index
     if params[:tag]
-      @articles = Document.tagged_with(params[:tag])
+      @documnets = Document.tagged_with(params[:tag])
     else
       @documents = Document.all
     end
