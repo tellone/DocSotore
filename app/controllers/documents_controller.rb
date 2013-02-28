@@ -1,14 +1,18 @@
 class DocumentsController < ApplicationController
   before_filter :get_user
   before_filter :get_document, :only => [:show, :update, :edit, :destroy] 
+  load_and_authorize_resource
 
   def new
     @document = @user.documents.build
   end
 
   def index
-   @documents = Document.all 
-  end
+    if params[:tag]
+      @articles = Document.tagged_with(params[:tag])
+    else
+      @documents = Document.all
+    end
 
   def create
     @document = @user.documents.build(params[:document])

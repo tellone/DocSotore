@@ -13,7 +13,7 @@ class Ability
         can :read, Document, :protected => false
         can :update, Document, :user_id => user.id
         can :create, Document
-        can :update, User, :user_id => user.id
+        # can :update, User, 
         can :read, User
       end
     #
