@@ -3,14 +3,18 @@
 
 
 == Todo list
-Test
+
+
+=Test
 	Write test for the view more tests for the view layare
 	Modify test for authentication and validations
 	Test seach and tags and add them to view
 	Test admin method
-Device 
+
+=Devise 
 	Make device wait on admin approval at sign-up
-View 
+
+=View 
 	Make files uploaded files viewable
 	
 
