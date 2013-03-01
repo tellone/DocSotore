@@ -7,9 +7,12 @@ FactoryGirl.define do
  
   factory :user do
     email
-    password 'glhf'
+    password 'glhf#hldesign'
+    admin = false
   end
-    
+  factory :admin, parent: :user do
+    admin true
+  end
   factory :error_user, parent: :user do
     password nil
   end

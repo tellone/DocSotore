@@ -5,6 +5,6 @@ class Document < ActiveRecord::Base
   acts_as_taggable  
   attr_accessible :title, :taglist
   validates_presence_of :title
-  validates :doc_file, :attachment_presence => true
+  # validates :doc_file, :attachment_presence => true
 
 end

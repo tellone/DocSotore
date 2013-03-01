@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe UsersController do
-  
-  
+  before :each do
+    @admin = FactoryGirl.create(:admin)
+    sign_in @admin
+  end
   describe "Get :new" do
     it "creates a new instace withou saving" do
       expect{
@@ -46,7 +48,7 @@ describe UsersController do
     it "populates an array of users" do
       user = FactoryGirl.create(:user)
       get :index
-      assigns(:users).should eq([user])
+      assigns(:users).should eq([@admin,user])
     end
 
     it "renders the :index view" do
@@ -71,7 +73,7 @@ describe UsersController do
 
   describe 'PUT update' do
     before :each do
-      @user = FactoryGirl.create(:user, email: "just@temp.com", password: "goodone")
+      @user = FactoryGirl.create(:user, email: "just@temp.com", password: "Something_long", admin: true)
     end
     context "valid attributes" do
       it "located the requested @user" do
@@ -81,10 +83,10 @@ describe UsersController do
 
       it "changes @user's attributes" do
         put :update, id: @user, 
-          user: FactoryGirl.attributes_for(:user, email: "get@it.here", password: "Wonder")
+          user: FactoryGirl.attributes_for(:user, email: "get@it.here", password: "Something_long")
         @user.reload
         @user.email.should eq("get@it.here")
-        @user.password.should eq("Wonder")
+        @user.password.should eq("Something_long")
       end
 
       it "redirects to the updated user" do
@@ -95,7 +97,7 @@ describe UsersController do
 
     context "invalid attributes" do
       it "locates the requested @user" do
-        put :update, id: @user, user: FactoryGirl.attributes_for(:user, email:"get@it.here", password: nil)
+          put :update, id: @user, user: FactoryGirl.attributes_for(:user, email:"get@it.here", password: nil)
         assigns(:user).should eq(@user)      
       end
 
@@ -104,7 +106,7 @@ describe UsersController do
           user: FactoryGirl.attributes_for(:user, email:"get@it.here", password: nil)
         @user.reload
         @user.email.should_not eq("get@it.here")  
-        @user.password.should eq("goodone")
+        @user.password.should eq("Something_long")
       end
 
       it "re-renders the edit method" do

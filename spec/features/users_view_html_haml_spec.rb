@@ -1,87 +1,140 @@
 require 'spec_helper'
 describe "the user view" do
-
-
-  describe "users/index.html.haml" do
-    before :each do
-      visit '/users'
-    end
-    it "Has a header" do
-      page.should have_content("Wellcome to the Document Storage!")
-    end
-    # it "has a link to sign up page" do
-    #   page.should have_link('log in')
-    #   page.should have_link('recover lost password')
-    # end
-
-    # it " has a login form" do
-    #   within('#login_form') do
-    #     fill_in 'Email', :with => 'gotoexaple@obv.se'
-    #     fill_in 'Password', :with =>'secuity!'
-    #   end
-    #   click_button 'Sign in'
-    # end
-
-    it " has a list of users currently logged in" do
-
-      user1 = FactoryGirl.create(:user)
-      user2 = FactoryGirl.create(:user)
-      visit '/users'
-      page.should have_link(user1.email)
-      page.should have_link(user2.email)
-    end
+  before :each do
+    @user1 = FactoryGirl.create(:user)
+    @admin1 = FactoryGirl.create(:admin)
   end
-
-
-  describe "users/show.html.haml" do
-
+  context "as admin" do
     before :each do
+      visit "/users/sign_in"
+      fill_in 'user_email', :with => @admin1.email
+      fill_in 'Password', :with => @admin1.password
+      click_button "Sign in"
 
-      @user1 = FactoryGirl.create(:user)
-      # @user2 = FactoryGirl.create(:user)
     end
+    describe "users/index.html.haml" do
+      it "Has a header" do
+        page.should have_content("Wellcome to the Document Storage!")
+      end
+      it " has a list of users currently logged in" do
 
-    it "displayes profile and links to edit" do
-      visit '/users'
-      click_link(@user1.email)
-      page.should have_content(@user1.email)
-      page.should have_link("edit profile")
-      page.should have_link("delete user")
-    end  
-
-    it "Has options for own documents" do
-
-      doc1 = FactoryGirl.create(:document)
-      visit user_path(@user1)
-      page.should have_content("Documents")
-      pending("set up the documet model")
-      page.should have_link("doc1.title")
-    end
-
-    it "has links to upload new document" do
-      visit user_path(@user1)
-      page.should have_link("upload document")
-    end
-  end
-
-
-  describe "users/edit.html.haml" do
-
-    before :each do
-      @user1 = FactoryGirl.create(:user)
-      # @user2 = FactoryGirl.create(:user)
-      visit edit_user_path(@user1)
-    end
-
-    it "Displays an edit form with email and password" do
-      page.should have_content("Edit user profile")
-      within('#userform') do
-        fill_in 'Email', :with => 'gotoexaple@obv.se'
-        fill_in 'Password', :with => 'secure!'
-        fill_in 'Password confirm', :with => 'secure!'
-        click_button "Save"
+        visit '/users'
+        page.should have_link(@user1.email)
+        page.should have_link(@admin1.email)
       end
     end
 
+
+    describe "users/show.html.haml" do
+
+      it "displayes profile and links to edit" do
+        click_link(@user1.email)
+        page.should have_content(@user1.email)
+        page.should have_link("edit profile")
+        pending "cancan"
+        page.should_not have_link("delete user")
+      end  
+
+      it "Has options for own documents" do
+
+        doc1 = FactoryGirl.create(:document, :user => @admin1)
+        visit user_path(@admin1)
+        page.should have_content("Documents")
+        # pending("set up the documet model")
+        page.should have_link("doc1.title")
+        page should have_link("edit doument")
+      end
+
+      it "has links to upload new document" do
+        visit user_path(@user1)
+        page.should have_link("upload document")
+      end
+    end
+
+
+    describe "users/edit.html.haml" do
+
+      before :each do
+        @user2 = FactoryGirl.create(:user)
+        visit edit_user_path(@user1)
+      end
+
+      it "Displays an edit form with email and password" do
+        page.should have_content("Edit user profile")
+        within('#userform') do
+          fill_in 'Email', :with => 'gotoexaple@obv.se'
+          fill_in 'Password', :with => 'secure!'
+          fill_in 'Password confirm', :with => 'secure!'
+          click_button "Save"
+        end
+      end
+
+    end
+  end
+  context "as a regular user" do
+    before :each do
+
+      visit '/users/sign_in'
+      fill_in 'user_email', :with => @user1.email
+      fill_in 'Password', :with => @user1.password
+      click_button "Sign in"
+
+    end
+    describe "users/index.html.haml" do
+      it "Has a header" do
+        page.should have_content("Wellcome to the Document Storage!")
+      end
+      it " has a list of users currently logged in" do
+
+        visit '/users'
+        page.should have_link(@user1.email)
+        page.should have_link(@admin1.email)
+      end
+    end
+
+
+    describe "users/show.html.haml" do
+
+      it "displayes profile and links to edit" do
+        click_link(@user1.email)
+        page.should have_content(@user1.email)
+        page.should have_link("edit profile")
+        pending "cancan"
+        page.should_not have_link("delete user")
+      end  
+
+      it "Has options for own documents" do
+
+        doc1 = FactoryGirl.create(:document, user_id: @user1.id)
+        visit user_path(@user1)
+        page.should have_content("Documents")
+        page.should have_link(doc1.title)
+
+      end
+
+      it "has links to upload new document" do
+        visit user_path(@user1)
+        page.should have_link("upload document")
+      end
+    end
+
+
+    describe "users/edit.html.haml" do
+
+      before :each do
+        visit edit_user_path(@user1)
+      end
+
+      it "Displays an edit form with email and password" do
+        page.should have_content("Edit user profile")
+        within('#userform') do
+          fill_in 'Email', :with => 'gotoexaple@obv.se'
+          fill_in 'Password', :with => 'notsecure!'
+          fill_in 'Password confirm', :with => 'notsecure!'
+          click_button "Save"
+        end
+      end
+
+    end
   end
 end

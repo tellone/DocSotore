@@ -3,6 +3,6 @@
 %form
   = label :document ,:title, "Title"
   = text_field :document ,:title
-  = label :document, :attached_file, "Document Path"
-  = file_field :document, :attached_file :
+  = label :document, :doc_file, "Document Path"
+  = file_field :document, :doc_file:
   %input{:type => "submit", :value => "Save"} 

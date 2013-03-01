@@ -17,9 +17,13 @@
     #Documents
       %h2 Documents
       -if can? :create, @document 
-        =link_to "upload document", new_user_document_path(@user)
+         =link_to( "upload document", new_user_document_path(@user))
+
 
       %h5 Users documents
-
-
+      
+      -@user.documents.each do |doc|
+        %p
+          = link_to(doc.title, [@user, doc])
       %h5 Other documents
+      = link_to "All documetns", user_documents_path(@user)

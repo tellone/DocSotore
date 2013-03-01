@@ -13,6 +13,7 @@ class DocumentsController < ApplicationController
     else
       @documents = Document.all
     end
+  end
 
   def create
     @document = @user.documents.build(params[:document])

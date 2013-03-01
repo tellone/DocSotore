@@ -42,7 +42,6 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
-  config.include Devise::TestHelpers, :type => :controller
 
   config.before(:each) do
     DatabaseCleaner.start
@@ -51,6 +50,12 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  # Testing devise
+  config.include Devise::TestHelpers, :type => :controller
+
+  config.include Devise::TestHelpers, :type => :view
+ 
   #factory girl
   config.include FactoryGirl::Syntax::Methods
 end
