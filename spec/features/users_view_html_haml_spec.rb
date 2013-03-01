@@ -4,11 +4,11 @@ describe "the user view" do
     @user1 = FactoryGirl.create(:user)
     @admin1 = FactoryGirl.create(:admin)
   end
-  describe "/user/sign_in" do
+  describe "/users/sign_in" do
     it "has two links" do
-      visit "/user/sign_in"
+      visit "/users/sign_in"
       page.should have_link("Forgot your password?")
-      page.sholud have_link("Sign_up")
+      page.should have_link("Sign up")
     end
   end
   context "as admin" do
@@ -22,15 +22,19 @@ describe "the user view" do
     describe "users/index.html.haml" do
       it "Has a header" do
         page.should have_content("Wellcome to the Document Storage!")
-        page.should have_content("Read Docments")
       end
       it " has a list of users currently logged in" do
 
-        visit '/users'
         page.should have_link(@user1.email)
         page.should have_link(@admin1.email)
-        page.should have_linl("All documents")
+        page.should have_link("All documents")
       end
+      it "has a sign out link" do
+        page.should have_link("sign out")
+        click_link("sign out")
+        page.should eql("/users/sign_in")
+      end
+
     end
 
 

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
 gem 'haml-rails'
+gem 'haml'
 gem 'mysql2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -17,6 +18,7 @@ group :assets do
   gem 'jquery-rails'
   gem 'jquery-datatables-rails'
   gem 'jquery-ui-rails'
+  gem 'less-js'
 end
 
 gem "rspec-rails", ">= 2.0.1", :group => [:development, :test]

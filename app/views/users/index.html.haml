@@ -1,17 +1,16 @@
 !!!5
 %html
-  %head
-    %title Document Storage
-  
+  %head 
+    %yeil :head 
   %body
     #wrapper
       #headers
         %h1 Wellcome to the Document Storage!
       #nav
         %ol
-          = link_to('sign out', "/users/sign_out")
-      
-
+          = link_to('sign out', destroy_user_session_path, :method => :delete))
+          -# = link_to "All documents", user_documents_path(@user)
+        
       #Users
         %h2 List all users
         - @users.each do |user|
