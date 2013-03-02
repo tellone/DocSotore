@@ -9,7 +9,7 @@ class DocumentsController < ApplicationController
 
   def index
     if params[:tag]
-      @documnets = Document.tagged_with(params[:tag])
+      @documnets = Document.tagged_with(params[:tag].merge!(:user => current_user))
     else
       @documents = Document.all
     end

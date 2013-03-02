@@ -1,8 +1,10 @@
-!!!
-%html
-  %head
-    %title Add new document
-  %body
-    #userform
-      %h2 Add document
-      =render "form"
+- content_for :title do
+  %title DocStor- Documents
+
+#list
+  %h2 All documents
+  -@documents.each do |doc|
+    %li
+      -us = doc.user 
+      =link_to(doc.title, [us, doc])
+

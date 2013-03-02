@@ -50,7 +50,7 @@ describe "the user view" do
 
       it "Has options for own documents" do
 
-        doc1 = FactoryGirl.create(:document, :user => @admin1)
+        doc1 = FactoryGirl.create(:document, user_id: @admin1.id)
         visit user_path(@admin1)
         page.should have_content("Documents")
         # pending("set up the documet model")

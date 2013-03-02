@@ -12,13 +12,18 @@ describe "documents urls" do
     end
 
     describe "documents/index.html.haml" do
-      before :each do
+      before :each do        
+        doc2 = FactoryGirl.create(:document, :user => @admin1)
         click_link("All documents")
       end
-        it "list documents" do
+      it "list documents" do
         page.should have_link(@doc1.title)
       end
+
     end
+    describe "document/show.html.haml"do
+      before :each do
+        visit [@user1, @doc1]
     describe "docuements/new.html.haml" do
 
 
