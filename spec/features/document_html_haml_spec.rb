@@ -24,8 +24,10 @@ describe "documents urls" do
     describe "document/show.html.haml"do
       before :each do
         visit [@user1, @doc1]
+      end
     describe "docuements/new.html.haml" do
-
+    
+    end
 
       it "displayes the new document form" do
         pending "routes to documents"
