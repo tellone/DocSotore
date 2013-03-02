@@ -1,8 +1,4 @@
-!!!5
-%html
-  %head
-    %title Add new document
-  %body
-    #userform
-      %h2 Add document
-      =render "form"
+-content_for :title do
+  %title Document view
+
+%h2 #{@document.title}

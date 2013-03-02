@@ -1,6 +1,7 @@
 class DocumentsController < ApplicationController
   before_filter :get_user
   before_filter :get_document, :only => [:show, :update, :edit, :destroy] 
+  before_filter :authenticate_user!
   load_and_authorize_resource
 
   def new
@@ -9,14 +10,14 @@ class DocumentsController < ApplicationController
 
   def index
     if params[:tag]
-      @documnets = Document.tagged_with(params[:tag].merge!(:user => current_user))
+      @documnets = Document.tagged_with(params[:tag])
     else
       @documents = Document.all
     end
   end
 
   def create
-    @document = @user.documents.build(params[:document])
+    @document = @user.documents.build(params[:document].merge!(:user => current_user))
     if @document.save
       flash[:notice] = "Document has been created."
       redirect_to [@user, @document]

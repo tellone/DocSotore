@@ -7,6 +7,7 @@ describe DocumentsController do
 
     @user1 = FactoryGirl.create(:user)
     @doc1 = FactoryGirl.create(:document, :user => @user1)
+    sign_in @user1
   end
 
 

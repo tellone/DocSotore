@@ -1,8 +1,6 @@
-!!!
-%html
-  %head
-    %title Add new document
-  %body
-    #form
-      %h2 Add document
-      =render "form"
+-content_for :title do
+  %title Add new document
+
+#form
+  %h2 Add document
+  =render "form"

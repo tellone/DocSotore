@@ -6,14 +6,14 @@ describe "the user view" do
   end
   describe "/users/sign_in" do
     it "has two links" do
-      visit "/users/sign_in"
+      visit "/auther/sign_in"
       page.should have_link("Forgot your password?")
       page.should have_link("Sign up")
     end
   end
   context "as admin" do
     before :each do
-      visit "/users/sign_in"
+      visit "/auther/sign_in"
       fill_in 'user_email', :with => @admin1.email
       fill_in 'Password', :with => @admin1.password
       click_button "Sign in"
@@ -32,7 +32,7 @@ describe "the user view" do
       it "has a sign out link" do
         page.should have_link("sign out")
         click_link("sign out")
-        page.should eql("/users/sign_in")
+        page.should have_url("/auther/sign_in")
       end
 
     end
@@ -44,8 +44,7 @@ describe "the user view" do
         click_link(@user1.email)
         page.should have_content(@user1.email)
         page.should have_link("edit profile")
-        pending "cancan"
-        page.should_not have_link("delete user")
+        page.should have_link("delete user")
       end  
 
       it "Has options for own documents" do
@@ -54,7 +53,7 @@ describe "the user view" do
         visit user_path(@admin1)
         page.should have_content("Documents")
         # pending("set up the documet model")
-        page.should have_link("doc1.title")
+        page.should have_link(doc1.title)
         page should have_link("edit doument")
       end
 
@@ -87,7 +86,7 @@ describe "the user view" do
   context "as a regular user" do
     before :each do
 
-      visit '/users/sign_in'
+      visit '/auther/sign_in'
       fill_in 'user_email', :with => @user1.email
       fill_in 'Password', :with => @user1.password
       click_button "Sign in"
