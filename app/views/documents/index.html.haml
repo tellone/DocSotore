@@ -4,8 +4,7 @@
 #list
   %h2 All documents
   -@documents.each do |doc|
-    -us = doc.user 
     %ol
       %li
-        =link_to(doc.title, root_path)
-
+        =link_to(doc.title, [@user, doc])
+        

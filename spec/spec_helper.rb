@@ -58,4 +58,7 @@ RSpec.configure do |config|
  
   #factory girl
   config.include FactoryGirl::Syntax::Methods
+
+  #paperclip matchers
+  config.include Paperclip::Shoulda::Matchers
 end

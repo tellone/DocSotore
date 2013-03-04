@@ -1,8 +1,9 @@
-
-
-%form
-  = label :document ,:title, "Title"
-  = text_field :document ,:title
-  = label :document, :doc_file, "Document Path"
-  = file_field :document, :doc_file:
+-# -@attachment = @document.attachments.build
+=form_for [@user, @document], :html => { :multipart => true } do |f|
+  %br
+  = f.label :title
+  = f.text_field :title
+  %br
+  = f.label :doc_file
+  = f.file_field :doc_file
   %input{:type => "submit", :value => "Save"} 

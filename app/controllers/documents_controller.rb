@@ -17,7 +17,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = @user.documents.build(params[:document].merge!(:user => current_user))
+    @document = @user.documents.build(params[:document])
     if @document.save
       flash[:notice] = "Document has been created."
       redirect_to [@user, @document]
@@ -46,16 +46,20 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document.destroy
-    flash[:notice] = "document deleted."
-    redirect_to @user
+    if @document.destroy
+      flash[:notice] = "document deleted."
+      redirect_to @user
+    else 
+      flash[:notice] = "Can't delete document"
+      redirect_to [@user, @document]
+    end
   end
 
   private #get_user should not be called outside contoller
   def get_user
     @user = User.find(params[:user_id])
   end
-  private
+  private 
   def get_document
     @document = @user.documents.find(params[:id])
   end

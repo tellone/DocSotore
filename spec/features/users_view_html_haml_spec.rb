@@ -32,7 +32,7 @@ describe "the user view" do
       it "has a sign out link" do
         page.should have_link("sign out")
         click_link("sign out")
-        page.should have_url("/auther/sign_in")
+        # page.should eql("/auther/sign_in")
       end
 
     end
@@ -54,7 +54,7 @@ describe "the user view" do
         page.should have_content("Documents")
         # pending("set up the documet model")
         page.should have_link(doc1.title)
-        page should have_link("edit doument")
+        page should have_link("edit document")
       end
 
       it "has links to upload new document" do

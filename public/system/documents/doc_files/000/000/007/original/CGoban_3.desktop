@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=CGoban 3
+GenericName=Java Web Start Application
+Comment=CGoban 3
+Type=Application
+Icon=/home/tellone/.icedtea/cache/2/http/files.gokgs.com/images/cgobanIcon.jpg
+Vendor=KGS Online
+Exec=javaws "/home/tellone/.icedtea/cache/0/http/files.gokgs.com/javaBin/cgoban.jnlp"

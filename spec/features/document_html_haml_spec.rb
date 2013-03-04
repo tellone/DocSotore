@@ -19,18 +19,23 @@ describe "documents urls" do
         page.should have_link(@doc1.title)
         page.should have_link(@doc2.title)
       end
-
+      it "has links to edit and delete" do
+        page.should have_link("delete")
+        page.should have_link("edit")
+      end
     end
     describe "document/show.html.haml"do
       before :each do
-        visit user_document_path(@admin1, @doc2)
+        visit user_document_path(@user1, @doc1)
       end
 
-      it "has as header" do
-        page.should have_content(@doc2.title)
+      it "has as title as header" do
+        page.should have_content(@doc1.title)
       end
     describe "docuements/new.html.haml" do
-    
+      it "has the doc_file" do
+        page.shoud have_
+      end
     end
 
       it "displayes the new document form" do
