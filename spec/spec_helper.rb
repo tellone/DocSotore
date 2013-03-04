@@ -60,5 +60,5 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
   #paperclip matchers
-  config.include Paperclip::Shoulda::Matchers
+  # config.include Paperclip::Shoulda::Matchers
 end

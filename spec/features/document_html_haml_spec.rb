@@ -23,7 +23,12 @@ describe "documents urls" do
         page.should have_link("delete")
         page.should have_link("edit")
       end
+      it "has a search filled with tag section" do
+        pending "acts as tagable"
+      end
     end
+
+
     describe "document/show.html.haml"do
       before :each do
         visit user_document_path(@user1, @doc1)
@@ -31,17 +36,21 @@ describe "documents urls" do
 
       it "has as title as header" do
         page.should have_content(@doc1.title)
+        page.should have_content("Uploded by: #{@user1.email}")
       end
-    describe "docuements/new.html.haml" do
-      it "has the doc_file" do
-        page.shoud have_
+      it "has as the text file" do
+        pending("paperclip conf")
+      end
+      it "displays the tags" do
+        page.should have_content("Tags: #{@doc1.tag_list}")
       end
     end
+    describe "documents/new.html.haml" do
 
       it "displayes the new document form" do
-        pending "routes to documents"
-
+        click_link("Upload document")
+        fill_in "Title", :with => "something_new"
+        fill_in "Doc file", :with => "/home/tellone/need_install.txt"
       end
-    end
-  end
-
+   end
+end

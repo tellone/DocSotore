@@ -1,27 +1,36 @@
 
 #profile
   %h2 Profile
-  %h5 Email - 
-  =@user.email
+  %p
+    %h5 Email:  #{@user.email}
+    %h5 Status: #{@user.admin}
 
   %p
     -if can? :update, @user
-      = link_to "edit profile", edit_user_path(@user)
+    = link_to("edit profile", edit_user_path(@user)) 
+    ||
 
-    -if can? :manage, @user
+    -if can? :manage, :all
       =link_to "delete user", root_path
       -# = link_to "delete user", :method => :delete, :confirm => "Do you realy want to remove this user?" 
     #Documents
       %h2 Documents
-      -if can? :create, @document 
-        =link_to( "upload document", new_user_document_path(@user))
+      =link_to("upload document", new_user_document_path(@user))
 
 
       %h5 Users documents
 
       -@user.documents.each do |doc|
         %ol
-          = link_to(doc.title, root_path)
-          = link_to("edit document", root_path)
+          -if can? :read, doc
+            = link_to(doc.title, [@user, doc], :method => :show)
+            ||
+          
+          -if can? :edit, doc
+            = link_to("edit", edit_user_document_path(@user, doc))
+            ||
+
+          -if current_user.admin?
+            =link_to("delete", [@user, doc], :method => :delete)
       %h5 Other documents
-      -# = link_to "All documents", user_documents_path(@user)
+      = link_to "All documents", user_documents_path(current_user)

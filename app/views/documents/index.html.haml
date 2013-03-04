@@ -7,4 +7,10 @@
     %ol
       %li
         =link_to(doc.title, [@user, doc])
-        
+
+        -if can? :manage, :all
+          ||
+          =link_to("edit", edit_user_document_path(@user,doc))
+          ||
+          =link_to("delete", [@user,doc], :metod => :delete, :cofirm => "are you sure You want to delete this document")
+        -# -end

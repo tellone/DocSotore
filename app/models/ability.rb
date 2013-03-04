@@ -5,22 +5,28 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
-      # if user.admin?
+      if user.admin?
         can :manage, :all
+        
         can :create, :all
-      # else
+        can :update, :all
+        can :read, :all
+      else
         # can :mange, :all
-        # can :read, Document, :user_id => user.id
+        can :update, Document do |document|
+          document.try{user} == current_user
+        end
 
-        # can :read, Document
-        # can :update, Document, :user_id => user.id
-        # can :create, Document
-       # # can :update, User, 
-        # can :read, User
-        # if current_user == user
-        #   can :update, User
+        can :read, Document
+        can :create, Document
+        can :read, User
+        
+        can :update, User
+        # do |user|
+
+          # user.try{user} == current_user
         # end
-      # end
+      end
     #
     # The first argument to `can` is the action you are giving the user 
     # permission to do.

@@ -30,8 +30,8 @@ describe "the user view" do
         page.should have_link("All documents")
       end
       it "has a sign out link" do
-        page.should have_link("sign out")
-        click_link("sign out")
+        page.should have_link("Sign out")
+        click_link("Sign out")
         # page.should eql("/auther/sign_in")
       end
 
@@ -42,24 +42,23 @@ describe "the user view" do
 
       it "displayes profile and links to edit" do
         click_link(@user1.email)
-        page.should have_content(@user1.email)
-        page.should have_link("edit profile")
-        page.should have_link("delete user")
+        page.should have_content("Email: #{@user1.email}")
       end  
 
       it "Has options for own documents" do
 
-        doc1 = FactoryGirl.create(:document, user_id: @admin1.id)
+        doc1 = FactoryGirl.create(:document, :user => @admin1)
         visit user_path(@admin1)
         page.should have_content("Documents")
         # pending("set up the documet model")
         page.should have_link(doc1.title)
-        page should have_link("edit document")
+        page should have_link("edit profile")
+        page.should have_link("delete user")
       end
 
       it "has links to upload new document" do
         visit user_path(@user1)
-        page.should have_link("upload document")
+        page.should have_link("Upload document")
       end
     end
 
@@ -85,7 +84,7 @@ describe "the user view" do
   end
   context "as a regular user" do
     before :each do
-
+      @user2 = FactoryGirl.create(:user)
       visit '/auther/sign_in'
       fill_in 'user_email', :with => @user1.email
       fill_in 'Password', :with => @user1.password
@@ -101,6 +100,9 @@ describe "the user view" do
         visit '/users'
         page.should have_link(@user1.email)
         page.should have_link(@admin1.email)
+        page.should have_link(@user2.email)
+        page.should_not have_link("edit user")
+        page.should_not have_link("delete user")
       end
     end
 
@@ -111,40 +113,29 @@ describe "the user view" do
         click_link(@user1.email)
         page.should have_content(@user1.email)
         page.should have_link("edit profile")
-        pending "cancan"
         page.should_not have_link("delete user")
       end  
 
       it "Has options for own documents" do
 
-        doc1 = FactoryGirl.create(:document, user_id: @user1.id)
+        doc1 = FactoryGirl.create(:document, :user => @user1)
         visit user_path(@user1)
         page.should have_content("Documents")
         page.should have_link(doc1.title)
-
+        page.should have_link("edit user")
+        page.should_not have_link("delete user")
       end
 
       it "has links to upload new document" do
         visit user_path(@user1)
         page.should have_link("upload document")
       end
-    end
 
+      it "has no links for a document owned by another user" do
+        visit user_path(@user2)
 
-    describe "users/edit.html.haml" do
-
-      before :each do
-        visit edit_user_path(@user1)
-      end
-
-      it "Displays an edit form with email and password" do
-        page.should have_content("Edit user profile")
-        within('#userform') do
-          fill_in 'Email', :with => 'gotoexaple@obv.se'
-          fill_in 'Password', :with => 'notsecure!'
-          fill_in 'Password confirm', :with => 'notsecure!'
-          click_button "Save"
-        end
+        page.should_not have_link("edit user")
+        page.should_not have_link("delete user")
       end
 
     end
