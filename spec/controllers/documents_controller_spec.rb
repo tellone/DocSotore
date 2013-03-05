@@ -133,16 +133,17 @@ describe DocumentsController do
 
       it "can do index" do
         get :index, :user_id => @user1.id
-        assigns(:documents).should eq([@doc1])
+        assigns(:documents).should eq([@doc1, @doc2])
       end
        
       it "read documents he own" do
-        get :show, :user_id => @user1.id, id: @doc1.id
+        get :show, :user_id => @user1.id, id: @doc1
         assigns(:document).should eq(@doc1)
       end
       
     end
     describe "get access error when" do
+
       it "tries to update someone elses document" do
         expect{
           put :update, :user_id => @user2.id, id: @doc2.id, document: FactoryGirl.attributes_for(:document, title: "Not this one")

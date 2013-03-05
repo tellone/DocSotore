@@ -5,6 +5,9 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
+    
+    can :read, User
+    can :update, User, :id => user.id
     cannot :update, Document
     cannot :read, Document
       if user.admin?
@@ -12,7 +15,7 @@ class Ability
         
       else
         can :update, Document do |document|
-          document.try{user} == user
+          document.try{:user_id} == user.id
         end
 
         can :read, Document do |document|
@@ -20,9 +23,6 @@ class Ability
         end
 
         can :create, Document
-        can :read, User
-        
-        can :update, User, :id => user.id
         # do |user|
 
           # user.try{user} == current_user

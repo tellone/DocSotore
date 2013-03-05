@@ -1,7 +1,7 @@
 class DocumentsController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource :user
-  load_and_authorize_resource :document, :through => :user
+  load_and_authorize_resource :document
 
   def new
     @document = @user.documents.build

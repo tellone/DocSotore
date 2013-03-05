@@ -173,7 +173,7 @@ describe UsersController do
     end
     describe "no error when" do
       it "changes it own attributes" do
-        put :update, id: @user.id, user: FactoryGirl.attributes_for(:user, email: "get@it.here", password: "Something_long")
+        put :update, id: @user, user: FactoryGirl.attributes_for(:user, email: "get@it.here", password: "Something_long")
         @user.reload
         @user.email.should eq("get@it.here")
       end
