@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :admin, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :admin, :approved, :password_confirmation, :remember_me
   
   validates_presence_of :email, :password
   validates_uniqueness_of :email
@@ -15,6 +15,18 @@ class User < ActiveRecord::Base
   has_many :documents
   
   acts_as_tagger
+
+def active_for_authentication? 
+  super && approved? 
+end 
+
+def inactive_message 
+  if !approved? 
+    :not_approved 
+  else 
+    super # Use whatever other message 
+  end 
+end
 
   private     
   def init

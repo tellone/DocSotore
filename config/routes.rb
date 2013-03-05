@@ -1,7 +1,16 @@
 DocumentStorage::Application.routes.draw do
 
   devise_for :users, :path => :auther
-
+  devise_scope :user do
+    resource :registration,
+      only: [:new, :create, :edit, :update],
+      path: 'users',
+      path_names: { new: 'sign_up' },
+      controller: 'devise/registrations',
+      as: :auther_registration do
+        get :cancel
+      end
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -9,6 +18,8 @@ DocumentStorage::Application.routes.draw do
   root :to => "users#index"
 
   resources :users do
+    
+    put :approve, on: :member
     resources :documents
   end 
   

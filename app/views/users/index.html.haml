@@ -9,16 +9,26 @@
 #list_links
   %h2 List all users
   %ol
+    %h4 Users needing approval
     - @users.each do |user|
-      %li
-        = link_to(user.email, user)
+      -if !user.approved?
+        =link_to(user.email, user)
+        ||
+        =link_to("Approve", approve_user_path(user), :method => :put)
+        ||
+        =link_to("delete user", cancel_user_registration_path(user))
+    
+    %h4 Users in system
+    -@users.each do |user|
+      -if user.approved?
+        %li
+          = link_to(user.email, user)
         
-        -if can? :upadate, user
-          ||
-          =link_to("edit user", edit_user_registration_path(user)) 
-        -if can? :manage, :all 
-          ||
-          =link_to("delete user", cancel_user_registration_path(user))
-        -end
+          -if can? :upadate, user
+            ||
+            =link_to("edit user", edit_user_registration_path(user)) 
+          -if can? :manage, :all 
+            ||
+            =link_to("delete user", cancel_user_registration_path(user))
     
   

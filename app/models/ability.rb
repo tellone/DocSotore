@@ -12,16 +12,15 @@ class Ability
         can :update, :all
         can :read, :all
       else
-        # can :mange, :all
         can :update, Document do |document|
-          document.try{user} == current_user
+          document.try{user} == user
         end
 
         can :read, Document
         can :create, Document
         can :read, User
         
-        can :update, User
+        can :update, User, :id => user.id
         # do |user|
 
           # user.try{user} == current_user

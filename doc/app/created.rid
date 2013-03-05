@@ -1,0 +1,11 @@
+Tue, 05 Mar 2013 01:23:11 +0100
+doc/README_FOR_APP	Sun, 24 Feb 2013 12:48:55 +0100
+app/controllers/application_controller.rb	Sun, 24 Feb 2013 12:48:55 +0100
+app/controllers/documents_controller.rb	Mon, 04 Mar 2013 16:08:13 +0100
+app/controllers/users_controller.rb	Tue, 05 Mar 2013 01:13:57 +0100
+app/helpers/application_helper.rb	Sun, 24 Feb 2013 12:48:55 +0100
+app/helpers/documents_helper.rb	Tue, 26 Feb 2013 02:58:45 +0100
+app/helpers/users_helper.rb	Sun, 24 Feb 2013 16:06:16 +0100
+app/models/ability.rb	Mon, 04 Mar 2013 23:42:46 +0100
+app/models/document.rb	Mon, 04 Mar 2013 21:30:20 +0100
+app/models/user.rb	Tue, 05 Mar 2013 00:18:10 +0100

@@ -18,6 +18,11 @@ log:clear
 middleware
 notes
 notes:custom
+paperclip:clean
+paperclip:refresh
+paperclip:refresh:metadata
+paperclip:refresh:missing_styles
+paperclip:refresh:thumbnails
 rails:template
 rails:update
 routes
@@ -26,6 +31,7 @@ spec
 spec:controllers
 spec:features
 spec:helpers
+spec:models
 spec:rcov
 stats
 time:zones:all

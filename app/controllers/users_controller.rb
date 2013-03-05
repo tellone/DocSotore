@@ -3,9 +3,17 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-   @users = User.all 
+    if params[:approved] == "false"
+      @users = User.find_all_by_approved(false)
+    else
+      @users = User.all
+    end
   end
-  
+  def approve
+    @user = User.find(params[:id])
+    @user.update_attribute(:approved, 'true')
+    render :action => :index 
+  end
   def new
     @user = User.new
   end
