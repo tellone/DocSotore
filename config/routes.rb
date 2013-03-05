@@ -4,7 +4,7 @@ DocumentStorage::Application.routes.draw do
   devise_scope :user do
     resource :registration,
       only: [:new, :create, :edit, :update],
-      path: 'users',
+      path: 'auther',
       path_names: { new: 'sign_up' },
       controller: 'devise/registrations',
       as: :auther_registration do
@@ -20,7 +20,10 @@ DocumentStorage::Application.routes.draw do
   resources :users do
     get 'tag/:tag', :to => "documents#index", as: :tag
     put :approve, on: :member
-    resources :documents
+    resources :documents do
+      put :open, on: :member
+    end
+      
   end 
   
   # Sample of regular route:

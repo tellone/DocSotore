@@ -1,7 +1,6 @@
 class DocumentsController < ApplicationController
-  before_filter :get_user
-  before_filter :get_document, :only => [:show, :update, :edit, :destroy] 
   before_filter :authenticate_user!
+  before_filter :get_user
   load_and_authorize_resource
 
   def new
@@ -14,6 +13,10 @@ class DocumentsController < ApplicationController
     else
       @documents = Document.all
     end
+  end
+  def open
+    @document.update_attribute(:open, 'true')
+    redirect_to [@user, @document]
   end
 
   def create

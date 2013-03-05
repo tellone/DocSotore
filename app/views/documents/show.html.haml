@@ -1,5 +1,13 @@
+
 -content_for :title do
   %title Document view
+
+-status = ""
+-if !@document.open?
+  -status = "Protected"
+-else 
+  -status = "Public"
+
 
 %h2 #{@document.title}
 
@@ -7,7 +15,9 @@ Tags: #{@document.tag_list}
 %p 
   =link_to(File.basename(@document.doc_file.path),
     @document.doc_file.url)
- 
+%p
+  %h5 View Status: #{status}
+
 %p
   %footer
-    Uploaded by: #{@user.email}
+    Uploaded by: #{@document.user.email}

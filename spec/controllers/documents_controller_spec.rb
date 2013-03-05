@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 describe DocumentsController do
-  # pending("some passing user stuff")
   context "as an admin" do 
     before :each do 
 
-      @admin1 = FactoryGirl.create(:user)
+      @admin1 = FactoryGirl.create(:admin)
       @doc1 = FactoryGirl.create(:document, :user => @admin1)
       sign_in @admin1
     end
@@ -25,10 +24,9 @@ describe DocumentsController do
         }.to change(Document, :count).by(1)
       end 
 
-      it "redirects to the new user" do
-        pending("show")
+      it "redirects to the user" do
         post :create, :user_id => @admin1.id, document: FactoryGirl.attributes_for(:document, user: @admin1) 
-        response.should redirect_to @admin1.documents.last 
+        response.should redirect_to [@admin1, assigns(:document)]
       end
     end
     describe "GET #index" do
@@ -42,7 +40,6 @@ describe DocumentsController do
         response.should render_template :index
       end
     end
-    # end
 
 
     describe "GET #show" do
@@ -61,13 +58,13 @@ describe DocumentsController do
       before :each do
         @doc2 = FactoryGirl.create(:document, user: @admin1, title: "NoThisOne")
       end
+
       context "valid attributes" do
 
         it "changes @user's attributes" do
           put :update, :user_id=> @admin1.id, id: @doc2, document:  FactoryGirl.attributes_for(:document, :user => @admin1)
           @doc2.reload
           @doc2.title.should eq("publish")
-          # @doc2.attach.should eq("Wonder")
         end
 
         it "redirects to the updated user" do
@@ -89,11 +86,6 @@ describe DocumentsController do
           @doc2.title.should_not eq("publish")  
         end
 
-        it "re-renders the edit method" do
-          pending("routes")
-          put :update, :user_id=> @admin1.id, id: @doc2, document:  FactoryGirl.attributes_for(:error_doc, :user => @admin1)
-          response.should render_template :edit
-        end
       end
     end
     describe "The destroy delete aciton"do
@@ -114,7 +106,7 @@ describe DocumentsController do
   end
 
 
-  context "regular user"
+  context "As a regular user" do
     before :each do 
 
       @user1 = FactoryGirl.create(:user)
@@ -123,45 +115,30 @@ describe DocumentsController do
     end
 
 
-  describe "get new" do
-    it "creates a new instace withou saving" do
-      expect{
-        get :new, :user_id => @user1.id
-      }.to_not change(Document,:count)
-    end
-  end
-  describe "Post create" do
-    it "creates a new document at the user" do
-      expect{
-        post :create, :user_id => @user1.id, document: FactoryGirl.attributes_for(:document, user: @user1) 
-      }.to change(Document, :count).by(1)
-    end 
+    describe "he can" do
 
-    it "redirects to the new user" do
-      pending("show")
-      post :create, :user_id => @user1.id, document: FactoryGirl.attributes_for(:document, user: @user1) 
-      response.should redirect_to @admin1.documents.last 
-    end
-  end
-    describe "GET #index" do
-      it "populates an array of users" do
+      it "access action new" do
+        expect{
+          get :new, :user_id => @user1.id
+        }.to_not change(Document,:count)
+      end
+
+      it "access action create" do
+        expect{
+          post :create, :user_id => @user1.id, document: FactoryGirl.attributes_for(:document, user: @user1) 
+        }.to change(Document, :count).by(1)
+      end 
+
+      it "can do index" do
         get :index, :user_id => @user1.id
-        assigns(:documents).should eq([@user1])
+        assigns(:documents).should eq([@doc1])
       end
-
-      it "renders the :index view" do
-        get :index, :user_id => @user1.id 
-        response.should render_template :index
+       
+      it "read unprotected documents he own" do
+        get :show, :user_id => @user1.id, id: @doc1
+        assigns(:document).should eq(@doc1)
       end
+      
     end
-  # end
-
-
-  describe "GET #show" do
-  it "assigns the requested user to @user" do
-    get :show, :user_id => @user1.id, id: @doc1
-    assigns(:document).should eq(@doc1)
-  end
   end
 end
-

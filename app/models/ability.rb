@@ -8,15 +8,15 @@ class Ability
       if user.admin?
         can :manage, :all
         
-        can :create, :all
-        can :update, :all
-        can :read, :all
       else
         can :update, Document do |document|
           document.try{user} == user
         end
 
-        can :read, Document
+        can :read, Document do |document|
+          document.try{user} == user || document.try(open) == true
+        end
+
         can :create, Document
         can :read, User
         

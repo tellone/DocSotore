@@ -5,15 +5,17 @@
   %h2 All documents
   -@documents.each do |doc|
     %ol
-      %li
+      -if can? :read, doc
         =link_to(doc.title, [@user, doc])
 
-        -if can? :manage, :all
+      -if can? :manage, :all
+        ||--  |  --||
+        =link_to("edit", edit_user_document_path(@user,doc))
+        ||
+        =link_to("delete", [@user,doc], :metod => :delete, :cofirm => "are you sure You want to delete this document")
+        -if !doc.open
           ||
-          =link_to("edit", edit_user_document_path(@user,doc))
-          ||
-          =link_to("delete", [@user,doc], :metod => :delete, :cofirm => "are you sure You want to delete this document")
-        -# -end
+          =link_to("make public", open_user_document_path(@user, doc), :method => :put)
         %p 
           %ol
             Tags: 
