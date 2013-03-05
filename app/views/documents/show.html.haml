@@ -4,8 +4,9 @@
 %h2 #{@document.title}
 
 Tags: #{@document.tag_list}
-%p
-  =link_to("Read document", @document.read_doc) 
+%p 
+  =link_to(File.basename(@document.doc_file.path),
+    @document.doc_file.url)
  
 %p
   %footer

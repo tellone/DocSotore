@@ -8,12 +8,6 @@ class Document < ActiveRecord::Base
   validates_attachment_content_type :doc_file, :content_type => ['application/pdf', 'application/msword', 'text/plain']
 
 
-  def read_doc
-  
-    if protected?
-      doc_file.copy_to_local_file
-    end
 
-  end
     
 end
