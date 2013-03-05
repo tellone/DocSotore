@@ -11,17 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130304231546) do
+ActiveRecord::Schema.define(:version => 20130305080224) do
 
   create_table "documents", :force => true do |t|
     t.string   "title"
     t.integer  "user_id"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.string   "doc_file_file_name"
     t.string   "doc_file_content_type"
     t.integer  "doc_file_file_size"
     t.datetime "doc_file_updated_at"
+    t.boolean  "protected",             :default => true
   end
 
   add_index "documents", ["user_id"], :name => "index_documents_on_user_id"

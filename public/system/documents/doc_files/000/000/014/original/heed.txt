@@ -1,0 +1,164 @@
+
+
+My end goal is to create several static HTML files for hand-off to other folks.
+
+But for my workflow, I'd like to have HAML as the basic source files. In doing so, I'd hope to DRY up the process at least on my side.
+
+Now I have a lot of pages that will ultimately be sharing a common layout, and I'm wondering how to incorporate the layouts.
+
+Here's my current code:
+./compile.rb
+
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'rake'
+require 'haml'
+
+FileList.new('./src/*.html.haml').each do |filename|
+  if filename =~ /([^\/]+)\.haml$/
+    File.open($1, 'w') do |f|
+      f.write Haml::Engine.new(File.read(filename)).render
+    end
+  end
+end
+
+./src/layout.html.haml
+
+!!!
+%html
+  %head
+    %title Yay
+  %body
+    = yield
+
+./src/home.html.haml
+
+= render :layout => 'header' do
+  %p This is awesome
+
+Now this clearly doesn't work because the render method is undefined out of the context of Rails, but I hope it gets the point across what I'm trying to do.
+
+Any suggestions?
+ruby haml
+share|edit|flag
+	
+asked May 25 '11 at 13:32
+Steven Xu
+5,4681444
+	add comment
+	
+start a bounty
+2 Answers
+active oldest votes
+up vote 25 down vote accepted
+	
+
+You're mixing up two distinct Rails feature: partials (using render) and layouts (using yield).
+
+You can add a rails-like version of either (or both) of them to a Haml only program.
+Partials
+
+In a rails view, you can use render :partial_name to cause the file _partial_name.html.haml to be rendered at that point in the containing view (actually Rails allows you to use any templating language supported and it will find to correct filename extension to use, but I'll stick to just Haml here). Outside of Rails render isn't available, but it can be added fairly easily.
+
+A simple render method would just find the appropriate haml file, render it, and return the html string for inclusion in the parent:
+
+def render(partial)
+  # assuming we want to keep the rails practice of prefixing file names
+  # of partials with "_"
+  Haml::Engine.new(File.read("_#{partial}.html.haml")).render
+end
+
+The first argument to Haml::Engine.render is a scope object, which we can use to add methods available inside the haml template. It defaults to Object.new. In a simple case like this, however, we can define the render method in the top level, and it will be available in the scope of the Haml template. We simply put our render method in the script before the call to Haml::Engine.new(...).render, and call it like this in our template:
+
+!!!
+%html
+  %head
+    %title Hello
+  %body
+    =render :the_partial
+
+Now the file _the_partial.html.haml will appear rendered at the appropriate point of the output.
+Local variables
+
+We can take this a step further. Rails allows you to pass in a hash of local variables to a partial. Haml will also accept a hash of variables to be passed as local variables, as the second argument to the Haml render method. So if we expand our render method to look like:
+
+def render(partial, locals = {})
+  Haml::Engine.new(File.read("_#{partial}.html.haml")).render(Object.new, locals)
+end
+
+we can use a partial that looks something like:
+
+%p You passed in #{foo}
+
+and call it from our template with:
+
+%body
+  =render :partial, :foo => "bar"
+
+which will render
+
+<body>
+  <p>You passed in bar</p>
+</body>
+
+Layouts
+
+In Rails, you can specify a layout for your views, so that all your pages can share the same header, menu area etc. This is done by specifying a layout file, within which you call yield to render the actual view in question. Layouts are slightly more tricky to add to haml, but can still be done.
+
+Hamls render method also accepts a block, so a simple solution would be to render the layout file, and pass a block that renders the view file:
+
+Haml::Engine.new(File.read("layout.html.haml")).render do
+  Haml::Engine.new(File.read("view.html.haml")).render
+end
+
+This would give the contents of layout.html.haml rendered with the contents of view.html.haml rendered where the layout file contained =yield.
+content_for
+
+Rails is a bit more flexible than that though. It allows you to call yield multiple times in your layout file, naming a specific region in each case, and to specify the contents to be added at each region using the content_for method within your views. So in your layout file:
+
+!!!
+%html
+  %head
+    = yield :title
+  %body
+    =yield
+
+and in your view:
+
+-content_for :title do
+  %title Hello
+%p
+  Here's a paragraph.
+
+The way Rails actually works is to render the view part first, storing all the different sections, and then rendering the layout, passing a block that provides the appropriate chunk whenever yield is called in the layout. We can replicate this using a little helper class to provide the content_for method and keep track of the rendered chunks for each region:
+
+class Regions  
+  def initialize
+    @regions_hash={}
+  end
+
+  def content_for(region, &blk)  
+    @regions_hash[region] = capture_haml(&blk)
+  end
+
+  def [](region)
+    @regions_hash[region]
+  end
+end
+
+Here we're using the capture_haml method to get the rendered haml without it going direct to the output. Note that this doesn't capture the unnamed part of the view.
+
+We can now use our helper class to render the final output.
+
+regions = Regions.new
+unnamed = Haml::Engine.new(File.read("view_named.html.haml")).render(regions)
+
+output = Haml::Engine.new(File.read("layout_named.html.haml")).render do |region|
+  region ? regions[region] : unnamed
+end
+
+Now the variable output contains the final rendered output.
+
+Note that the code here doesn't provide all the flexibility that's included with rails, but hopefully it's enough to show you where to start customising Haml to meet your needs.
+

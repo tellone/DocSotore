@@ -16,7 +16,7 @@
       ||
 
     -if can? :manage, :all
-      = link_to "delete user", :method => :delete, :confirm => "Do you realy want to remove this user?" 
+      = link_to("delete user", user_path(@user), :method => :delete, :confirm => "Do you realy want to remove this user?")
     
 #Documents
 
@@ -39,6 +39,6 @@
     -if current_user.admin?
       =link_to("delete", [@user, doc], :method => :delete)
 
-    %h5 Other documents
-    = link_to("All documents", user_documents_path(current_user))
+  %h5 Other documents
+  = link_to("All documents", user_documents_path(current_user))
 

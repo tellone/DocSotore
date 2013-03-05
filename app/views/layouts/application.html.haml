@@ -11,17 +11,23 @@
   %body
     #container.container
       %header
-        -# = render 'layouts/navigation'
-        -# = render 'layouts/messages'
-      #user_nav
-        -if signed_in?
-          =link_to("Back to index", root_path)
-          ||--||
-          =link_to "My profile", user_path(current_user)
-          ||
-          =link_to("Upload document", new_user_document_path(current_user))
-          || -- ||
-          = link_to('Sign out', destroy_user_session_path, :method => "delete")
+
+        #user_nav
+          -if signed_in?
+            =link_to("Back to index", root_path)
+            ||--||
+            =link_to "My profile", user_path(current_user)
+            ||
+            =link_to("Upload document", new_user_document_path(current_user))
+            || -- ||
+            = link_to('Sign out', destroy_user_session_path, :method => "delete")
+        #errors
+          -if flash[:error]
+            %p 
+              =flash[:error]
+          -if flash[:notice]
+            %p
+              =flash[:notice]
       #main{:role => "main"}
         %ol
           = yield
