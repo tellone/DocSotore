@@ -14,3 +14,7 @@
           ||
           =link_to("delete", [@user,doc], :metod => :delete, :cofirm => "are you sure You want to delete this document")
         -# -end
+        %p 
+          %ol
+            Tags: 
+            =raw doc.tag_list.map { |t| link_to( t, user_tags_path(current_user, t))}.join(', ')

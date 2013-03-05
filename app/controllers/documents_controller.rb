@@ -11,8 +11,6 @@ class DocumentsController < ApplicationController
   def index
     if params[:tag]
       @documnets = Document.tagged_with(params[:tag])
-    elsif
-      @documnets = Document.find_all_by_protected(true)
     else
       @documents = Document.all
     end

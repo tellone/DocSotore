@@ -4,6 +4,9 @@
 %h2 #{@document.title}
 
 Tags: #{@document.tag_list}
-
-%footer
-  Uploaded by: #{@user.email}
+%p
+  =link_to("Read document", @document.read_doc) 
+ 
+%p
+  %footer
+    Uploaded by: #{@user.email}
