@@ -110,7 +110,9 @@ describe DocumentsController do
     before :each do 
 
       @user1 = FactoryGirl.create(:user)
-      @doc1 = FactoryGirl.create(:document, :user => @admin1)
+      @user2 = FactoryGirl.create(:admin)
+      @doc1 = FactoryGirl.create(:document, :user => @user1)
+      @doc2 = FactoryGirl.create(:document, :user => @user2)
       sign_in @user1
     end
 
@@ -134,11 +136,25 @@ describe DocumentsController do
         assigns(:documents).should eq([@doc1])
       end
        
-      it "read unprotected documents he own" do
-        get :show, :user_id => @user1.id, id: @doc1
+      it "read documents he own" do
+        get :show, :user_id => @user1.id, id: @doc1.id
         assigns(:document).should eq(@doc1)
       end
       
+    end
+    describe "get access error when" do
+      it "tries to update someone elses document" do
+        expect{
+          put :update, :user_id => @user2.id, id: @doc2.id, document: FactoryGirl.attributes_for(:document, title: "Not this one")
+        }.to raise_error(CanCan::AccessDenied)
+      end 
+
+
+      it "when deletes is called" do
+        expect{
+          delete :destroy, :user_id => @user1.id, id: @doc1 
+        }.to raise_error(CanCan::AccessDenied)
+      end
     end
   end
 end
