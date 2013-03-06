@@ -1,6 +1,6 @@
 class DocumentsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :get_user
+  # before_filter :get_user
   load_and_authorize_resource :user
   load_and_authorize_resource :document, :through => :user
 
@@ -15,9 +15,14 @@ class DocumentsController < ApplicationController
       @documents = Document.all
     end
   end
+  
   def open
     @document.update_attribute(:open, 'true')
     redirect_to [@user, @document]
+  end
+  
+  def search
+    @documents = @user.documents.search(params[:search])
   end
 
   def create
