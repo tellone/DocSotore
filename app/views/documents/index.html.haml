@@ -21,5 +21,5 @@
         %p 
           %ol
             Tags: 
-            =raw doc.tag_list.map { |t| link_to( t, user_tag_path(current_user, t))}.join(', ')
+            =raw doc.tag_list.map { |t| link_to( t, user_tag_path(doc.user, t), :method => :get)}.join(', ')
 

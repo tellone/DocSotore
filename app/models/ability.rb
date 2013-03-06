@@ -1,4 +1,5 @@
 class Ability
+        
   include CanCan::Ability
 
   def initialize(user)
@@ -10,25 +11,24 @@ class Ability
     can :update, User, :id => user.id
     # cannot :update, Document
     # cannot :read, Document
-      if user.admin?
-        can :manage, :all
-        
-      else
-        can :create, Document
-        can :new, Document
+    if user.admin?
+      can :manage, :all
 
-        can :update, Document do |document|
-          document.try{:user} == user
-        end
+    else
+      can :create, Document
+      can :new, Document
 
-        can :read, Document, :user => {:id => user.id}
-        can :read, Document, :open => true
 
-        # do |user|
-
-          # user.try{user} == current_user
-        # end
+      can :edit, Document do |document|
+        document.try{:user} == user
       end
+
+      can :update, Document, :user => {:id => user.id}
+      can :read, Document, :user => {:id => user.id}
+      can :read, Document, :open => true
+
+
+    end
     #
     # The first argument to `can` is the action you are giving the user 
     # permission to do.

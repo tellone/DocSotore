@@ -29,15 +29,15 @@
   -@user.documents.each do |doc|
     %ol
     -if can? :read, doc
-      = link_to(doc.title, [@user, doc], :method => :show)
+      = link_to(doc.title, [doc.user, doc])
       ||
           
-    -if can? :edit, doc
-      = link_to("edit", edit_user_document_path(@user, doc))
+    -if can? :update, doc
+      = link_to("edit", edit_user_document_path(doc.user, doc))
       ||
 
     -if current_user.admin?
-      =link_to("delete", [@user, doc], :method => :delete)
+      =link_to("delete", [doc.user, doc], :method => :delete)
 
   %h5 Other documents
   = link_to("All documents", user_documents_path(current_user))

@@ -18,7 +18,7 @@ DocumentStorage::Application.routes.draw do
   root :to => "users#index"
 
   resources :users do
-    get 'tag/:tag', :to => "documents#index", as: :tag
+    get 'tags/:tag', :to => "documents#index", as: :tag
     put :approve, on: :member
     resources :documents do
       put :open, on: :member
