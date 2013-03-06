@@ -21,6 +21,7 @@ FactoryGirl.define do
   factory :document do
     user
     title "publish"
+    # doc_file
     tag_list "How_to, author, informativ"
   end
   factory :error_doc, parent: :document do

@@ -39,20 +39,20 @@ describe "the user view" do
 
     describe "users/show.html.haml" do
 
-      it "displayes profile and links for other user to edit" do
+      it "displayes profile and links for him and admins to edit" do
         click_link(@user1.email)
         page.should have_content("Email: #{@user1.email}")
-        page should have_link("edit profile")
+        page.should have_link("edit profile")
         page.should have_link("delete user")
       end  
 
       it "Has options for own profile" do
-
+        doc1 = create(:document, :user => @admin1)
         visit user_path(@admin1)
         page.should have_content("Documents")
         # pending("set up the documet model")
         page.should have_link(doc1.title)
-        page should have_link("edit profile")
+        page.should have_link("edit profile")
         page.should have_link("delete user")
       end
 
@@ -128,7 +128,6 @@ describe "the user view" do
         visit user_path(@user1)
         page.should have_link("upload document")
       end
-
 
     end
   end

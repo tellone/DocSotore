@@ -9,22 +9,23 @@ class DocumentsController < ApplicationController
   end
 
   def index
-    if params[:tag]
+    if params[:search]
       @documnets = Document.tagged_with(params[:tag])
+
     else
       @documents = Document.all
     end
   end
   
+  def search
+    @documents = Document.tagged_with(params([:search]))
+  end
+
   def open
     @document.update_attribute(:open, 'true')
     redirect_to [@user, @document]
   end
   
-  def search
-    @documents = @user.documents.search(params[:search])
-  end
-
   def create
     @document = @user.documents.build(params[:document])
     if @document.save

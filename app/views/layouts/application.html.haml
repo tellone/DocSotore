@@ -21,6 +21,9 @@
             =link_to("Upload document", new_user_document_path(current_user))
             || -- ||
             = link_to('Sign out', destroy_user_session_path, :method => "delete")
+            || -- || signed in as:
+            =current_user.email
+            
         #errors
           -if flash[:error]
             %p 

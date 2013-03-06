@@ -3,9 +3,7 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-    if params[:approved] == "false"
-      @users = User.all
-    end
+    @users = User.all
   end
 
   def approve

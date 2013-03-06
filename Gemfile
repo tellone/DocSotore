@@ -50,7 +50,8 @@ end
 # gem 'debugger'
 gem 'devise'
 gem 'cancan'
-gem 'acts-as-taggable-on', '~> 2.3.1'
+gem 'acts-as-taggable-on'
 gem 'execjs'
+gem 'acts_as_indexed'
 gem 'paperclip'
 gem "pry"

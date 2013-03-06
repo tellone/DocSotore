@@ -1,8 +1,16 @@
 - content_for :title do
   %title DocStor- Documents
 
+%h2 All documents (matching search)
+#searches
+  %p
+    %ol
+      = form_tag(search_user_documents_path(current_user), :method => :get) do 
+        = label_tag("Search for tags:") 
+        = text_field_tag("search", params[:search])
+        =submit_tag("Search") 
+
 #Documents
-  %h2 All documents
   -@documents.each do |doc|
     %ol
       -if can? :read, doc
@@ -21,5 +29,5 @@
         %p 
           %ol
             Tags: 
-            =raw doc.tag_list.map { |t| link_to( t, user_tag_path(doc.user, t), :method => :get)}.join(', ')
+            =raw doc.tag_list.map { |t| link_to( t, user_tag_path(doc.user, :tag => t), :method => :index)}.join(', ')
 

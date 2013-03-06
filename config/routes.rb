@@ -21,6 +21,9 @@ DocumentStorage::Application.routes.draw do
     get 'tags/:tag', :to => "documents#index", as: :tag
     put :approve, on: :member
     resources :documents do
+      collection do
+        get :search
+      end
       put :open, on: :member
     end
       
