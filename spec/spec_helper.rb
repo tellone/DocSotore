@@ -58,6 +58,10 @@ RSpec.configure do |config|
  
   #factory girl
   config.include FactoryGirl::Syntax::Methods
+  
+  #email spec
+  config.include(EmailSpec::Helpers)
+  config.include(EmailSpec::Matchers)
 
   #paperclip matchers
   # config.include Paperclip::Shoulda::Matchers

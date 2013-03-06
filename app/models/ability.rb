@@ -8,21 +8,22 @@ class Ability
     
     can :read, User
     can :update, User, :id => user.id
-    cannot :update, Document
-    cannot :read, Document
+    # cannot :update, Document
+    # cannot :read, Document
       if user.admin?
         can :manage, :all
         
       else
-        can :update, Document do |document|
-          document.try{:user_id} == user.id
-        end
-
-        can :read, Document do |document|
-          document.try{user} == user || document.try(open) == true
-        end
-
         can :create, Document
+        can :new, Document
+
+        can :update, Document do |document|
+          document.try{:user} == user
+        end
+
+        can :read, Document, :user => {:id => user.id}
+        can :read, Document, :open => true
+
         # do |user|
 
           # user.try{user} == current_user

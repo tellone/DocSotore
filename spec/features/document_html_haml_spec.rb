@@ -31,7 +31,7 @@ describe "documents urls" do
 
     describe "document/show.html.haml"do
       before :each do
-        visit user_document_path(@user1, @doc1)
+        click_link(@doc1.title)
       end
 
       it "has as title as header" do
@@ -50,7 +50,7 @@ describe "documents urls" do
       it "displayes the new document form" do
         click_link("Upload document")
         fill_in "Title", :with => "something_new"
-        fill_in "Doc file", :with => "/home/tellone/need_install.txt"
+        page.attach_file("Doc_file", '/home/tellone/need_install.txt') 
       end
-   end
+  end
 end

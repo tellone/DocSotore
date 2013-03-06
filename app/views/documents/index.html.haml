@@ -6,7 +6,7 @@
   -@documents.each do |doc|
     %ol
       -if can? :read, doc
-        =link_to(doc.title, [@user, doc])
+        =link_to(doc.title, [doc.user, doc])
 
       -if can? :manage, :all
         ||--  |  --||
@@ -16,6 +16,8 @@
         -if !doc.open
           ||
           =link_to("make public", open_user_document_path(@user, doc), :method => :put)
+      
+      -if can? :read, doc
         %p 
           %ol
             Tags: 

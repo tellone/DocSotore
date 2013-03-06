@@ -32,7 +32,6 @@ describe "the user view" do
       it "has a sign out link" do
         page.should have_link("Sign out")
         click_link("Sign out")
-        # page.should eql("/auther/sign_in")
       end
 
     end
@@ -123,8 +122,6 @@ describe "the user view" do
         visit user_path(@user1)
         page.should have_content("Documents")
         page.should have_link(doc1.title)
-        page.should_not have_link("edit profile")
-        page.should_not have_link("delete user")
       end
 
       it "has links to upload new document" do
@@ -132,12 +129,6 @@ describe "the user view" do
         page.should have_link("upload document")
       end
 
-      it "has no links for a document owned by another user" do
-        visit user_path(@user2)
-
-        page.should_not have_link("edit user")
-        page.should_not have_link("delete user")
-      end
 
     end
   end
