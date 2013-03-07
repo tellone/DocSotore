@@ -1,4 +1,5 @@
 require 'factory_girl'
+include ActionDispatch::TestProcess
 
 FactoryGirl.define do
 
@@ -21,7 +22,7 @@ FactoryGirl.define do
   factory :document do
     user
     title "publish"
-    # doc_file
+    doc_file { fixture_file_upload(Rails.root + 'spec/fixuters/test.txt', 'text/plain') } 
     tag_list "How_to, author, informativ"
   end
   factory :error_doc, parent: :document do

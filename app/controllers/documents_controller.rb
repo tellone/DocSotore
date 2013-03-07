@@ -18,7 +18,7 @@ class DocumentsController < ApplicationController
   end
   
   def search
-    @documents = Document.tagged_with(params([:search]))
+    @documents = Document.tagged_with(params[:search])
   end
 
   def open
